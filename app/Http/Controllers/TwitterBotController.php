@@ -35,7 +35,8 @@ class TwitterBotController extends Controller
 
          // Define the limite time and check if each tweet is inside it or no
          $limit_time = $new_date->diffInMinutes(Carbon::now());
-         if($limit_time <= 15) {
+
+         if($limit_time <= 10000) {
 
       		// get the tweet reference id
       		$selectedTweets[$tweet]['id_tweet'] = $allTweets->statuses[$tweet]->id_str;
@@ -62,6 +63,8 @@ class TwitterBotController extends Controller
          }
    	}
 
-   	return view('all-tweets')->with('tweets', $selectedTweets);
+      
+
+   	return view('pages.all-tweets', ['tweets' => $selectedTweets]);
    }
 }
