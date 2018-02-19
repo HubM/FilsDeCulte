@@ -15,4 +15,4 @@ Route::get('/', function(){
 	return view('welcome');
 });
 
-Route::get('/all-tweets', 'TwitterBotController@getAllTweets');
+Route::get('/new-tweets', 'TwitterBotController@getNewTweets');
