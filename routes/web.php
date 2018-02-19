@@ -16,3 +16,5 @@ Route::get('/', function(){
 });
 
 Route::get('/new-tweets', 'TwitterBotController@getNewTweets');
+
+Route::get('/response-tweets', 'TwitterBotController@sendResponseTweets');
