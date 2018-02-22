@@ -40,7 +40,11 @@ class TwitterBotController extends Controller
       // Define the limite time and check if each tweet is inside it or no
       $limit_time = $new_date->diffInMinutes(Carbon::now());
 
-      if($limit_time <= 90) {
+      // Check the source of the tweet
+      $source = $allTweets->statuses[$tweet]->user->screen_name;
+
+
+      if($limit_time <= 10 && $source != BOT_ACCOUNT) {
 
   		  // get the tweet reference id
   		  $selectedTweets[$tweet]['id_tweet'] = $allTweets->statuses[$tweet]->id_str;
@@ -57,6 +61,11 @@ class TwitterBotController extends Controller
         // get the time where the tweet has been created
         $selectedTweets[$tweet]['created_at'] = $new_date->toTimeString();
 
+        // Verify we have only one movie as hashtag and get it
+        if(count($allTweets->statuses[$tweet]->entities->hashtags) === 1) {
+         $selectedTweets[$tweet]['movie'] = $allTweets->statuses[$tweet]->entities->hashtags[0]->text;
+        }
+
     		// Check all users mentionned and eject FilsDeCulte
     		foreach ($allTweets->statuses[$tweet]->entities->user_mentions as $key => $value) {
     			if($value->name != BOT_ACCOUNT) {
@@ -68,31 +77,42 @@ class TwitterBotController extends Controller
               'id' => $target_id,
               'profil' =>$target,
             ];
+          // or set the target to 0
     			} else {
             $selectedTweets[$tweet]['target'] = 0;
           }
     		}
-
-    		// Verify we have only one movie as hashtag and get it
-    		if(count($allTweets->statuses[$tweet]->entities->hashtags[0]) == 1) {
- 	   		 $selectedTweets[$tweet]['movie'] = $allTweets->statuses[$tweet]->entities->hashtags[0]->text;
- 		    }
-		
       }
    	}
 
-    // if our array of tweet has more than one tweet, 
-    // for each tweet, we will verify if a target is present, 
-    // and if it's good, we push it in the tweet table
+
+
+
+    // if our new tweet array has one or more tweet
     if(count($selectedTweets) > 0) {
+      /* we call the insert to db method, which will put the tweet content to 
+         the database */
+       $this->clearDatabase();
        $this->insertToDatabase($selectedTweets);
+       $this->getSpoil($selectedTweets);
     }
 
    	return view('pages.new-tweets', ['tweets' => $selectedTweets]);
   }
 
+
+
+
+  public function clearDatabase() {
+      return DB::table('tweet')->delete();
+  }
+
   /*********************
     INSERT THEM IN DB 
+
+  This method first check if the tweet has a target, 
+  and then it will put the tweet content to the database
+
   **********************/
   public function insertToDatabase($array) {
     foreach ($array as $key => $value) {
@@ -107,10 +127,40 @@ class TwitterBotController extends Controller
             'target_tweet' => $value["target"]["profil"],
             'target_user_id' => $value["target"]["id"],
             'movie_title' => $value["movie"],
-            'created_tweet_time' => $value["created_at"]
+            'created_tweet_time' => $value["created_at"],
+            'spoil' => ''
           ]
         );
       }
+    }
+  }
+
+  /***************************************
+    GET THE SPOIL FROM THE HASHTAG MOVIE 
+  ****************************************/
+  public function getSpoil($array) {
+    $client = new \AlgoliaSearch\Client('KMJ42U25W4', '1458f0776b9eb5750afc6566782ce6c9');
+    $index = $client->initIndex('movies');
+
+    $tweets = DB::table('tweet')->get();
+    foreach ($array as $key => $value) {
+
+      foreach ($tweets as $key => $value) {
+        $query = (object) $index->search($value->movie_title);
+        $spoil = $query->hits[0]["spoil"];
+
+        if(is_array($spoil)) {
+          $rand = array_rand($spoil, 1);
+          $response = $spoil[$rand];
+        } else {
+          $response = $spoil;
+        }
+
+        DB::table('tweet')->update(
+          ['spoil' => $response]
+        );
+      }
+
     }
   }
 
@@ -120,16 +170,21 @@ class TwitterBotController extends Controller
   public function sendResponseTweets() {
     $tweets = DB::table('tweet')->get();
 
-    $target_id = $tweets[0]->target_user_id;
-    $target_name = $tweets[0]->target_tweet;
+    foreach ($tweets as $key => $value) {
+      $target_id = $value->target_user_id;
+      $target_name = $value->target_tweet;
+      $spoil = $value->spoil;
 
-    // Tweet to the target
-    $parameters_message_target = [
-      'status' => "@".$target_name.' Ils y arrivent mais 3 meurent'
-    ];
+      // Tweet to the target
+      $parameters_message_target = [
+        'status' => "@".$target_name. ' ' .$spoil
+      ];
 
-    Twitter::postTweet($parameters_message_target);
+      Twitter::postTweet($parameters_message_target);
+    }
 
     return view('pages.response-tweets');
   }
+
+
 }
