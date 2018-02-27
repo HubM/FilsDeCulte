@@ -17,18 +17,16 @@ class TwitterBotController extends Controller
   ***************/
   public function getNewTweets() {
    	$parameters = [
-   		'q' => ['filsdeculte', 'FilsDeCulte'],
-   		'count' => 20,
+   		'q' => 'FilsDeCulte'
    	];
 
-    // Search on twitter all the tweets in relation w/ our bot
+    /* Search on twitter all the tweets in relation w/ our bot
+    and get the number of them */
    	$allTweets = Twitter::getSearch($parameters);
-
-    // Get the number of tweets received
    	$numberOfTweets = count($allTweets->statuses);
 
-    // Create an empty array of our selected Tweets
-   	$selectedTweets = [];
+    // Init an empty array of our selected Tweets
+    $selectedTweets = [];
 
    	// check all tweet retourned 
    	for ($tweet=0; $tweet < $numberOfTweets; $tweet++) { 
@@ -43,8 +41,7 @@ class TwitterBotController extends Controller
       // Check the source of the tweet
       $source = $allTweets->statuses[$tweet]->user->screen_name;
 
-
-      if($limit_time <= 10 && $source != BOT_ACCOUNT) {
+      if($limit_time <= 100 && $source != BOT_ACCOUNT) {
 
   		  // get the tweet reference id
   		  $selectedTweets[$tweet]['id_tweet'] = $allTweets->statuses[$tweet]->id_str;
@@ -61,13 +58,18 @@ class TwitterBotController extends Controller
         // get the time where the tweet has been created
         $selectedTweets[$tweet]['created_at'] = $new_date->toTimeString();
 
+        // set the boolean isSpoiled to false
+        $selectedTweets[$tweet]['isSpoiled'] = 0;
+
+
         // Verify we have only one movie as hashtag and get it
         if(count($allTweets->statuses[$tweet]->entities->hashtags) === 1) {
          $selectedTweets[$tweet]['movie'] = $allTweets->statuses[$tweet]->entities->hashtags[0]->text;
-        }
+        } 
 
     		// Check all users mentionned and eject FilsDeCulte
     		foreach ($allTweets->statuses[$tweet]->entities->user_mentions as $key => $value) {
+
     			if($value->name != BOT_ACCOUNT) {
     				$target = $allTweets->statuses[$tweet]->entities->user_mentions[$key]->screen_name;
             $target_id = $allTweets->statuses[$tweet]->entities->user_mentions[$key]->id_str;
@@ -82,7 +84,11 @@ class TwitterBotController extends Controller
             $selectedTweets[$tweet]['target'] = 0;
           }
     		}
+
       }
+
+
+
    	}
 
 
@@ -90,9 +96,10 @@ class TwitterBotController extends Controller
 
     // if our new tweet array has one or more tweet
     if(count($selectedTweets) > 0) {
+
       /* we call the insert to db method, which will put the tweet content to 
          the database */
-       $this->clearDatabase();
+       // $this->clearDatabase();
        $this->insertToDatabase($selectedTweets);
        $this->getSpoil($selectedTweets);
     }
@@ -116,7 +123,7 @@ class TwitterBotController extends Controller
   **********************/
   public function insertToDatabase($array) {
     foreach ($array as $key => $value) {
-      if($value["target"] === 0) {
+      if($value["target"] === 0 && $value["movie_title"] != '') {
         continue;
       } else {
         DB::table('tweet')->insertGetId(
@@ -128,7 +135,8 @@ class TwitterBotController extends Controller
             'target_user_id' => $value["target"]["id"],
             'movie_title' => $value["movie"],
             'created_tweet_time' => $value["created_at"],
-            'spoil' => ''
+            'spoil' => '',
+            'isSpoiled' => $value['isSpoiled']
           ]
         );
       }
@@ -147,6 +155,7 @@ class TwitterBotController extends Controller
 
       foreach ($tweets as $key => $value) {
         $query = (object) $index->search($value->movie_title);
+
         $spoil = $query->hits[0]["spoil"];
 
         if(is_array($spoil)) {
@@ -170,17 +179,36 @@ class TwitterBotController extends Controller
   public function sendResponseTweets() {
     $tweets = DB::table('tweet')->get();
 
+    /*
+      For each tweet, if this has the boolean 
+      isSpoiled set to 0, we define the target account id, 
+      the target name and get the spoil.
+    */
     foreach ($tweets as $key => $value) {
-      $target_id = $value->target_user_id;
-      $target_name = $value->target_tweet;
-      $spoil = $value->spoil;
 
-      // Tweet to the target
-      $parameters_message_target = [
-        'status' => "@".$target_name. ' ' .$spoil
-      ];
+      if($value->isSpoiled == 0) {
 
-      Twitter::postTweet($parameters_message_target);
+        $target_id = $value->target_user_id;
+        $target_name = $value->target_tweet;
+        $spoil = $value->spoil;
+
+        /*
+          Then we build the spoil and send it via the 
+          Twitter API function postTweet()
+        */
+        $parameters_message_target = [
+          'status' => "@".$target_name. ' ' .$spoil
+        ];
+        Twitter::postTweet($parameters_message_target);
+
+        /*
+          We finally update the boolean isSpoiled in our DB
+        */
+        DB::table('tweet')->where('id', '=', $value->id)->update(['isSpoiled' => 1]);
+
+      } else {
+        continue;
+      }
     }
 
     return view('pages.response-tweets');
