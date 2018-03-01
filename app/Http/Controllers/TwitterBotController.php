@@ -16,6 +16,8 @@ class TwitterBotController extends Controller
     GET TWEETS  
   ***************/
   public function getNewTweets() {
+
+    
    	$parameters = [
    		'q' => 'FilsDeCulte'
    	];
@@ -24,6 +26,10 @@ class TwitterBotController extends Controller
     and get the number of them */
    	$allTweets = Twitter::getSearch($parameters);
    	$numberOfTweets = count($allTweets->statuses);
+
+
+
+
 
     // Init an empty array of our selected Tweets
     $selectedTweets = [];
@@ -41,7 +47,7 @@ class TwitterBotController extends Controller
       // Check the source of the tweet
       $source = $allTweets->statuses[$tweet]->user->screen_name;
 
-      if($limit_time <= 100 && $source != BOT_ACCOUNT) {
+      if($limit_time <= 15 && $source != BOT_ACCOUNT) {
 
   		  // get the tweet reference id
   		  $selectedTweets[$tweet]['id_tweet'] = $allTweets->statuses[$tweet]->id_str;
@@ -150,11 +156,18 @@ class TwitterBotController extends Controller
     $client = new \AlgoliaSearch\Client('KMJ42U25W4', '1458f0776b9eb5750afc6566782ce6c9');
     $index = $client->initIndex('movies');
 
+
     $tweets = DB::table('tweet')->get();
     foreach ($array as $key => $value) {
 
       foreach ($tweets as $key => $value) {
         $query = (object) $index->search($value->movie_title);
+
+
+    // echo "<pre>";
+    // print_r($query);
+    // die();
+
 
         $spoil = $query->hits[0]["spoil"];
 
@@ -185,7 +198,6 @@ class TwitterBotController extends Controller
       the target name and get the spoil.
     */
     foreach ($tweets as $key => $value) {
-
       if($value->isSpoiled == 0) {
 
         $target_id = $value->target_user_id;
@@ -197,7 +209,7 @@ class TwitterBotController extends Controller
           Twitter API function postTweet()
         */
         $parameters_message_target = [
-          'status' => "@".$target_name. ' ' .$spoil
+          'status' =>  '@'.$target_name. ' #'.$value->movie_title. ' ' .$spoil
         ];
         Twitter::postTweet($parameters_message_target);
 
