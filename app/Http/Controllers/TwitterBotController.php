@@ -31,7 +31,7 @@ class TwitterBotController extends Controller
     $selectedTweets = [];
 
    	// check all tweet retourned 
-   	for ($tweet=0; $tweet < $numberOfTweets; $tweet++) { 
+   	for ($tweet=0; $tweet < $numberOfTweets; $tweet++) {  
 
       // get the time of each tweet and convert it to Carbon date format
       $initial_date = $allTweets->statuses[$tweet]->created_at;
@@ -43,7 +43,7 @@ class TwitterBotController extends Controller
       // Check the source of the tweet
       $source = $allTweets->statuses[$tweet]->user->screen_name;
 
-      $existingTweet = DB::table('tweet')->where('id_tweet', $allTweets->statuses[$tweet]->id_str)->get()->toArray();
+      $existingTweet = DB::table('tweets')->where('id_tweet', $allTweets->statuses[$tweet]->id_str)->get()->toArray();
 
 
       if (!empty($existingTweet)) {
@@ -124,7 +124,7 @@ class TwitterBotController extends Controller
       if($value["target"] === 0 && $value["movie_title"] != '') {
         continue;
       } else {
-        DB::table('tweet')->insertGetId(
+        DB::table('tweets')->insertGetId(
           [
             'id_tweet' => $value["id_tweet"], 
             'user_tweet' => $value["user"],
@@ -149,7 +149,7 @@ class TwitterBotController extends Controller
     $index = $client->initIndex('movies');
 
 
-    $tweets = DB::table('tweet')->get();
+    $tweets = DB::table('tweets')->get();
     foreach ($array as $key => $value) {
 
       foreach ($tweets as $key => $value) {
@@ -167,7 +167,7 @@ class TwitterBotController extends Controller
             $response = $spoil;
           }
 
-          DB::table('tweet')->update(
+          DB::table('tweets')->update(
             ['spoil' => $response]
           );
         }
@@ -194,7 +194,7 @@ class TwitterBotController extends Controller
 
         Twitter::postTweet($parameters_message_target);
     } else {
-      $tweets = DB::table('tweet')->get();
+      $tweets = DB::table('tweets')->get();
        /*
         For each tweet, if this has the boolean 
         isSpoiled set to 0, we define the target account id, 
@@ -220,7 +220,7 @@ class TwitterBotController extends Controller
           /*
             We finally update the boolean isSpoiled in our DB
           */
-          DB::table('tweet')->where('id', '=', $value->id)->update(['isSpoiled' => 1]);
+          DB::table('tweets')->where('id', '=', $value->id)->update(['isSpoiled' => 1]);
 
         } else {
           continue;
