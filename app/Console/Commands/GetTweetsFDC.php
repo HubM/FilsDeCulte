@@ -3,15 +3,24 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
-use Twitter;
 use Illuminate\Support\Facades\DB;
+
 use \App\Tweet;
+use Twitter;
+
+use \App\Jobs\connectAlgoliaAndGetSpoilJob;
+use Illuminate\Foundation\Bus\DispatchesJobs;
+
 use Carbon\Carbon;
+// use \App\Http\Controllers\getSpoilFromAlgoliaController;
+
 
 // define("BOT_ACCOUNT", 'FilsDeCulte');
 
 class GetTweetsFDC extends Command
 {
+
+   use DispatchesJobs;
     /**
      * The name and signature of the console command.
      *
@@ -83,9 +92,19 @@ class GetTweetsFDC extends Command
               }
             }  
 
+            /*
+              Then we call the method to insert the tweet in our database,
+              with a empty spoil and a boolean isSpoiled set up at false
+            */
             Tweet::insertTweetInDatabase($selectedTweets[$key]);
-           // dd($selectedTweets[$key]);
 
+            /* 
+              We create a new instance of our connectAlgoliaAndGetSpoilJob which will create a connection
+              to Algolia and get a spoil. This spoil is then updated in our mysql db, associated to it's tweet.
+            */
+            $identifiant_tweet = $selectedTweets[$key]['id_tweet'];
+            $movie = $selectedTweets[$key]['movie'];
+            $response = $this->dispatch(new connectAlgoliaAndGetSpoilJob($identifiant_tweet, $movie));
 
 
             /* If the validation is'nt good, we keep the unconformed tweet to an array,
