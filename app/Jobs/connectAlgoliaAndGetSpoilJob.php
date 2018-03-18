@@ -60,7 +60,7 @@ class connectAlgoliaAndGetSpoilJob implements ShouldQueue
       /*
         we get the final spoil, and update in our database the tweet associated
       */
-      Tweet::where('id_tweet', $this->tweet)->update(['spoil' => $response]);;
+      Tweet::where('id_tweet', $this->tweet)->update(['spoil' => $response]);
 
 
     } else {

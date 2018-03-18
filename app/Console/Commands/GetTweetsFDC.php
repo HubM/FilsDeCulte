@@ -9,6 +9,7 @@ use \App\Tweet;
 use Twitter;
 
 use \App\Jobs\connectAlgoliaAndGetSpoilJob;
+use \App\Jobs\postBotTweetResponse;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 
 use Carbon\Carbon;
@@ -104,12 +105,22 @@ class GetTweetsFDC extends Command
             */
             $identifiant_tweet = $selectedTweets[$key]['id_tweet'];
             $movie = $selectedTweets[$key]['movie'];
-            $response = $this->dispatch(new connectAlgoliaAndGetSpoilJob($identifiant_tweet, $movie));
+
+            $algoliaJob = new connectAlgoliaAndGetSpoilJob($identifiant_tweet, $movie);
+            $this->dispatch($algoliaJob);
 
 
-            /* If the validation is'nt good, we keep the unconformed tweet to an array,
-            and we will push a private message to the author to explain him that his tweet isn't good.
-            and give maybe a link to him which explain how to tweet with our bot.
+// ----------------------
+
+            $postResponseJob = (new postBotTweetResponse($identifiant_tweet))->delay(Carbon::now()->addSecond(15));
+
+            $this->dispatch($postResponseJob);
+
+
+            /* 
+              If the validation is'nt good, we keep the unconformed tweet to an array,
+              and we will push a private message to the author to explain him that his tweet isn't good.
+              and give maybe a link to him which explain how to tweet with our bot.
             */
           } else {
             $notSelectedTweets[] = $tweet;
