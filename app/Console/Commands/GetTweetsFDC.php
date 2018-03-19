@@ -54,6 +54,8 @@ class GetTweetsFDC extends Command
      */
     public function handle()
     {
+
+        print('STARTING THE COMMAND');
         /* Search on twitter all the tweets in relation w/ our bot
         and get the number of them */
         $parameters = [
@@ -128,7 +130,7 @@ class GetTweetsFDC extends Command
           }
         }
 
-
+        print('FINISHING THE COMMAND');
 
       }
     }
