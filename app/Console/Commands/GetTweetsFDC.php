@@ -3,15 +3,25 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
-use Twitter;
 use Illuminate\Support\Facades\DB;
+
 use \App\Tweet;
+use Twitter;
+
+use \App\Jobs\connectAlgoliaAndGetSpoilJob;
+use \App\Jobs\postBotTweetResponse;
+use Illuminate\Foundation\Bus\DispatchesJobs;
+
 use Carbon\Carbon;
+// use \App\Http\Controllers\getSpoilFromAlgoliaController;
+
 
 // define("BOT_ACCOUNT", 'FilsDeCulte');
 
 class GetTweetsFDC extends Command
 {
+
+   use DispatchesJobs;
     /**
      * The name and signature of the console command.
      *
@@ -83,14 +93,35 @@ class GetTweetsFDC extends Command
               }
             }  
 
+            /*
+              Then we call the method to insert the tweet in our database,
+              with a empty spoil and a boolean isSpoiled set up at false
+            */
             Tweet::insertTweetInDatabase($selectedTweets[$key]);
-           // dd($selectedTweets[$key]);
 
+            /* 
+              We create a new instance of our connectAlgoliaAndGetSpoilJob which will create a connection
+              to Algolia and get a spoil. This spoil is then updated in our mysql db, associated to it's tweet.
+            */
+            $identifiant_tweet = $selectedTweets[$key]['id_tweet'];
+            $movie = $selectedTweets[$key]['movie'];
 
+            $algoliaJob = new connectAlgoliaAndGetSpoilJob($identifiant_tweet, $movie);
+            $this->dispatch($algoliaJob);
 
-            /* If the validation is'nt good, we keep the unconformed tweet to an array,
-            and we will push a private message to the author to explain him that his tweet isn't good.
-            and give maybe a link to him which explain how to tweet with our bot.
+            /*
+              We create then a new instance of the postBotTweetResponse which will get the spoil and construct
+              a tweet for the target. In this one, we tag the target, add an hastag with the movie and finally give 
+              the spoil.
+              After that, we set the boolean isSpoiled to 1 for this tweet in our database.
+            */
+            $postResponseJob = (new postBotTweetResponse($identifiant_tweet))->delay(Carbon::now()->addSecond(15));
+            $this->dispatch($postResponseJob);
+
+            /* 
+              If the validation is'nt good, we keep the unconformed tweet to an array,
+              and we will push a private message to the author to explain him that his tweet isn't good.
+              and give maybe a link to him which explain how to tweet with our bot.
             */
           } else {
             $notSelectedTweets[] = $tweet;

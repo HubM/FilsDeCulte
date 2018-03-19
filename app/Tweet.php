@@ -56,7 +56,7 @@ class Tweet extends Model
       		$userMentions === 2 &&
       		!$existingTweet
       	) {
-    				return true;
+				return true;
       } 
 
     }
@@ -76,7 +76,7 @@ class Tweet extends Model
     	$tweet->created_tweet_time = $singleTweet['created_at'];
     	$tweet->spoil = '';
     	$tweet->isSpoiled = $singleTweet['isSpoiled'];
-
+      $tweet->isFailed = 0;
 
     	$tweet->save();
     }
