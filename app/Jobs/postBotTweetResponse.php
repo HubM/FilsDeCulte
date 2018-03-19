@@ -39,9 +39,9 @@ class postBotTweetResponse implements ShouldQueue
       we build a response which contain the target name, the movie and the spoil 
     */
     $tweet = Tweet::where('id_tweet', $this->tweet_id);
+    $tweet_id = $tweet->first()->id_tweet;
 
     if($tweet->first()->isSpoiled == 0) {
-      $tweet_id = $tweet->first()->id_tweet;
       $target_id = $tweet->first()->target_user_id;
       $target_name = $tweet->first()->target_tweet;
       $spoil = $tweet->first()->spoil;
@@ -58,6 +58,15 @@ class postBotTweetResponse implements ShouldQueue
         We finally set the isSpoiled boolean to 1, like that this tweet will never be spoiled again :D
       */      
       $tweet->update(['isSpoiled' => 1]);
+
+    } else {
+      /*
+        If the tweet has the isSpoiled boolean at 1, we technically should never seen this error
+        beccause the tweet should not be selected by the isElligible function (Tweet model).
+        We have decided to make a second verficiation here, and if the tweet exist already with a isSpoiled to 1, we simply display this error and die the script 
+      */
+      exit("the tweet with the id n°$tweet_id has already been spoiled");
     }
+    
   }
 }
