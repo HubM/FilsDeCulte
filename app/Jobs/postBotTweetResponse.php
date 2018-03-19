@@ -38,13 +38,15 @@ class postBotTweetResponse implements ShouldQueue
 
     if($tweet->isSpoiled == 0) {
 
+      $tweet_id = $tweet->id_tweet;
       $target_id = $tweet->target_user_id;
       $target_name = $tweet->target_tweet;
       $spoil = $tweet->spoil;
       $movie = $tweet->movie_title;
 
       $parameters_message_target = [
-        'status' =>  '@'.$target_name. ' #'.$movie. ' ' .$spoil
+        'status' =>  "Désolé @$target_name mais dans #$movie, $spoil",
+        'in_reply_to_status_id' => $tweet_id
       ];
 
       Twitter::postTweet($parameters_message_target);

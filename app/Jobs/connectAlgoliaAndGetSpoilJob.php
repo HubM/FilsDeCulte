@@ -8,6 +8,8 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use \App\Tweet;
+use Twitter;
+
 class connectAlgoliaAndGetSpoilJob implements ShouldQueue
 {
   use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
@@ -65,9 +67,34 @@ class connectAlgoliaAndGetSpoilJob implements ShouldQueue
 
     } else {
       /*
-        if we haven't a spoil for this movie, we stop the processus and display a message (tmp)
+        if we haven't a spoil for this movie, we get the tweet and get all
+        the necessary informations to build a response on the initial tweet where
+        we say that we haven't the message
       */
-      dd('THERE IS NO SPOIL FOR YOUR MOVIE, SORRY BRO');
+      $Badtweet = Tweet::where('id_tweet', $this->tweet)->first();
+
+      $tweetCreator_tweet_id = $Badtweet->id_tweet; 
+      $tweetCreator = $Badtweet->user_tweet;
+      $tweetCreator_id = $Badtweet->tweet_user_id;
+      $tweetCreator_movie = $Badtweet->movie_title;
+
+      $parametersDirectMessageFail = [
+        'status' => "Sorry @$tweetCreator, we doesn't know your movie #$tweetCreator_movie :/",
+        'in_reply_to_status_id' => $tweetCreator_tweet_id
+      ];
+      Twitter::postTweet($parametersDirectMessageFail);
+
+
+      /*
+        Once the tweet has been posted, we initialize the isFailed to 1.
+        This Data can be interessant for statistics.
+        We finally use exit to stop the execution of the script, and displ
+      */
+      Tweet::where('id_tweet', $this->tweet)->update(['isFailed' => 1]);
+
+      exit("stop the execution of the tweet n°$tweetCreator_tweet_id");
+
+
     }
 
   }
