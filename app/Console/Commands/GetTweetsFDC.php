@@ -109,13 +109,14 @@ class GetTweetsFDC extends Command
             $algoliaJob = new connectAlgoliaAndGetSpoilJob($identifiant_tweet, $movie);
             $this->dispatch($algoliaJob);
 
-
-// ----------------------
-
+            /*
+              We create then a new instance of the postBotTweetResponse which will get the spoil and construct
+              a tweet for the target. In this one, we tag the target, add an hastag with the movie and finally give 
+              the spoil.
+              After that, we set the boolean isSpoiled to 1 for this tweet in our database.
+            */
             $postResponseJob = (new postBotTweetResponse($identifiant_tweet))->delay(Carbon::now()->addSecond(15));
-
             $this->dispatch($postResponseJob);
-
 
             /* 
               If the validation is'nt good, we keep the unconformed tweet to an array,
