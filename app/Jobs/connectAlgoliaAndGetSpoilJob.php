@@ -44,6 +44,9 @@ class connectAlgoliaAndGetSpoilJob implements ShouldQueue
 
     $query = (object) $index->search($this->movie);
 
+    // We make a query to get the current tweet
+    $tweet = Tweet::where('id_tweet', $this->tweet);
+
     /*
       We verify that we have a response, 
       if this response is an array with multiple spoil,
@@ -62,7 +65,7 @@ class connectAlgoliaAndGetSpoilJob implements ShouldQueue
       /*
         we get the final spoil, and update in our database the tweet associated
       */
-      Tweet::where('id_tweet', $this->tweet)->update(['spoil' => $response]);
+      $tweet->update(['spoil' => $response]);
 
 
     } else {
@@ -71,7 +74,7 @@ class connectAlgoliaAndGetSpoilJob implements ShouldQueue
         the necessary informations to build a response on the initial tweet where
         we say that we haven't the message
       */
-      $Badtweet = Tweet::where('id_tweet', $this->tweet)->first();
+      $Badtweet = $tweet->first();
 
       $tweetCreator_tweet_id = $Badtweet->id_tweet; 
       $tweetCreator = $Badtweet->user_tweet;
@@ -90,7 +93,7 @@ class connectAlgoliaAndGetSpoilJob implements ShouldQueue
         This Data can be interessant for statistics.
         We finally use exit to stop the execution of the script, and displ
       */
-      Tweet::where('id_tweet', $this->tweet)->update(['isFailed' => 1]);
+      $tweet->update(['isFailed' => 1]);
 
       exit("stop the execution of the tweet n°$tweetCreator_tweet_id");
 

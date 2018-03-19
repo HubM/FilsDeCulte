@@ -34,15 +34,18 @@ class postBotTweetResponse implements ShouldQueue
    */
   public function handle()
   {
-    $tweet = Tweet::where('id_tweet', $this->tweet_id)->first();
+    /*
+      We find the tweet by its unique id and if it hasn't been spoiled,
+      we build a response which contain the target name, the movie and the spoil 
+    */
+    $tweet = Tweet::where('id_tweet', $this->tweet_id);
 
-    if($tweet->isSpoiled == 0) {
-
-      $tweet_id = $tweet->id_tweet;
-      $target_id = $tweet->target_user_id;
-      $target_name = $tweet->target_tweet;
-      $spoil = $tweet->spoil;
-      $movie = $tweet->movie_title;
+    if($tweet->first()->isSpoiled == 0) {
+      $tweet_id = $tweet->first()->id_tweet;
+      $target_id = $tweet->first()->target_user_id;
+      $target_name = $tweet->first()->target_tweet;
+      $spoil = $tweet->first()->spoil;
+      $movie = $tweet->first()->movie_title;
 
       $parameters_message_target = [
         'status' =>  "Désolé @$target_name mais dans #$movie, $spoil",
@@ -50,10 +53,11 @@ class postBotTweetResponse implements ShouldQueue
       ];
 
       Twitter::postTweet($parameters_message_target);
+
+      /*
+        We finally set the isSpoiled boolean to 1, like that this tweet will never be spoiled again :D
+      */      
+      $tweet->update(['isSpoiled' => 1]);
     }
-
-    Tweet::where('id_tweet', $this->tweet_id)->update(['isSpoiled' => 1]);
-
-
   }
 }
