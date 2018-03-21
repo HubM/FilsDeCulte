@@ -83,8 +83,8 @@ class GetTweetsFDC extends Command
 
             foreach ($userMentions as $id => $value) {
               if($value->name != BOT_ACCOUNT) {
-                $target_id = $tweet->entities->user_mentions[$key]->id_str;
-                $target = $tweet->entities->user_mentions[$id]->screen_name;
+                $target_id = $value->id_str;
+                $target = $value->screen_name;
                 $selectedTweets[$key]['target'] = [
                   'id' => $target_id,
                   'profil' =>$target,
