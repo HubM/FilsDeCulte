@@ -9,7 +9,7 @@ use \App\Tweet;
 use Twitter;
 
 use \App\Jobs\connectAlgoliaAndGetSpoilJob;
-use \App\Jobs\postBotTweetResponse;
+use \App\Jobs\postBotTweetResponseJob;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 
 use Carbon\Carbon;
@@ -115,7 +115,7 @@ class GetTweetsFDC extends Command
               the spoil.
               After that, we set the boolean isSpoiled to 1 for this tweet in our database.
             */
-            $postResponseJob = (new postBotTweetResponse($identifiant_tweet))->delay(Carbon::now()->addSecond(15));
+            $postResponseJob = (new postBotTweetResponseJob($identifiant_tweet))->delay(Carbon::now()->addSecond(15));
             $this->dispatch($postResponseJob);
 
             /* 
