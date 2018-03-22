@@ -11,9 +11,11 @@
 |
 */
 
-Route::get('/', function(){
-	return view('welcome');
-});
+// Route::get('/', function(){
+// 	return view('welcome');
+// });
+
+Route::get('/', 'StatsController@getStats');
 
 Route::get('/new-tweets', 'TwitterBotController@getNewTweets');
 
