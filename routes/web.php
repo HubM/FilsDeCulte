@@ -20,8 +20,8 @@ Route::get('/', function() {
 });
 
 
+Route::get('/about', function() {
+	return view('pages.about');
+});
+
 Route::get('/our-stats', 'StatsController@getStats');
-
-// Route::get('/new-tweets', 'TwitterBotController@getNewTweets');
-
-// Route::get('/response-tweets', 'TwitterBotController@sendResponseTweets');
