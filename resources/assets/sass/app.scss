@@ -1,15 +1,26 @@
-
-// Fonts
+/* =================
+Boostrap & Fonts
+================= */ 
+@import '~bootstrap/scss/bootstrap';
 @import url("https://fonts.googleapis.com/css?family=Raleway:300,400,600");
 
-// Variables
+
+
+/* =================
+Variables & Reset
+================= */ 
+@import "reset";
 @import "variables";
 
-// Bootstrap
-@import '~bootstrap/scss/bootstrap';
 
-.navbar-laravel {
-  background-color: #fff;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
-}
+/* =================
+Components
+================= */ 
+@import "components/buttons";
+
+
+/* =================
+Layouts
+================= */ 
+@import "layouts/welcome";
 

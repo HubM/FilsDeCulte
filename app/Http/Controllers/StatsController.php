@@ -59,6 +59,6 @@ class StatsController extends Controller
 
 			$best_movie = $query_best_movies[0]->movie_title;
 	  */
-
+		return view('pages.statistics');	
   }
 }

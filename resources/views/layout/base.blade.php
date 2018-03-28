@@ -11,7 +11,7 @@
     <link rel="stylesheet" type="text/css" href="css/custom.css">
   </head>
 <body>
-  <div class="container">
+  <div class="@yield('body-class')">
     @yield('content')
   </div>
 </body>

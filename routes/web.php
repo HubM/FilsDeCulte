@@ -15,8 +15,13 @@
 // 	return view('welcome');
 // });
 
-Route::get('/', 'StatsController@getStats');
+Route::get('/', function() {
+	return view('pages.hello');
+});
 
-Route::get('/new-tweets', 'TwitterBotController@getNewTweets');
 
-Route::get('/response-tweets', 'TwitterBotController@sendResponseTweets');
+Route::get('/about', function() {
+	return view('pages.about');
+});
+
+Route::get('/our-stats', 'StatsController@getStats');
