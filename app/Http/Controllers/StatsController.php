@@ -6,59 +6,90 @@ use Illuminate\Http\Request;
 use \App\Tweet;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
+
+
+define('LIMIT_TWEETS_TODAY',5);
+
 class StatsController extends Controller
 {
   public function getStats() {
 
+		/* 
+			Initialisation
+			--------
+			We first create an empty array datas which will contain all the 
+			informations we need. 
+			The array $tweets get all the tweets from the datab
+  	*/
+  	$datas = [];
   	$tweets = Tweet::get();
 
-	  /*
-			Variables pour gestion des tweets échouées
+  	/* 
+			Global number of tweets
 			--------
-
-  		$failedTweets = Tweet::where('isFailed', 1);
-  		$get_failedTweets = $failedTweets->get();
-  		$count_failedTweets = $failedTweets->count();
-		*/
-
-  	/*
-			Variables pour connaitre le meilleur spoiler
-			---------
-	  	$query_best_spoiler = Tweet::select(DB::raw("user_tweet, count(user_tweet) as best_spoiler"))
-	  												 							->groupBy('user_tweet')
-	  												 							->orderBy("best_spoiler",'desc')
-	  												 							->limit(2)
-	  												 							->get();
-
-  		$best_spoiler = $query_best_spoiler[0]->user_tweet;
   	*/
+  	$count_tweets = count($tweets);
+  	$datas['all_tweets'] = $count_tweets;
 
-  	/*
-			Variables pour obtenir les tweets du jours et leur nombre
-			---------
-	  	foreach ($tweets as $tweet => $value) {
-	  		$tweet_date = Carbon::parse($value->created_at);
-
-	  		if($tweet_date->isToday()) 
-	  			$today_tweets[$tweet] = $value;
-	  	}
-
-	  	$today_tweets - Les tweets du jours;
-	  	$nb_today_tweets = count($today_tweets); - Le nombre de tweet du jour
+		/* 
+			Number of tweets spoiled && failed &&
+			get the number of tweet made today
+			--------
   	*/
+  	$counterSpoil = 0;
+  	$counterFailed = 0;
+  	$counterDailyTweets = 0;
+  	$daily_tweets = [];
+  	foreach ($tweets as $key => $value) {  	
+  		$tweet_date = Carbon::parse($value->created_at);
 
-	  /*
-			Variables pour obtenir le films le plus tweeté
-			---------
+  		if($tweet_date->isToday()){
+  			$counterDailyTweets++;
+  			if($key <= LIMIT_TWEETS_TODAY){
+					$daily_tweets[$key] = $value;
+  			}
+  		}
 
-			$query_best_movies = Tweet::select(DB::raw("movie_title, count(movie_title) as best_movies"))
-  												 							->groupBy('movie_title')
-  												 							->orderBy("best_movies",'desc')
-  												 							->limit(1)
-  												 							->get();
+  		if($value->isSpoiled) {
+  			$counterSpoil++;
+  		}
 
-			$best_movie = $query_best_movies[0]->movie_title;
-	  */
-		return view('pages.statistics');	
+  		if($value->isFailed) {
+  			$counterFailed++;
+  		}
+  	}
+
+  	$datas['counter_tweets_spoiled'] = $counterSpoil;
+  	$datas['counter_tweets_failed'] = $counterFailed;
+  	$datas['counter_daily_tweets'] = $counterDailyTweets;
+  	$datas['daily_tweets'] = $daily_tweets;
+  	
+  	/* 
+			Get best spoiler
+			--------
+  	*/
+  	$query_best_spoiler = Tweet::select(DB::raw("user_tweet, count(user_tweet) as best_spoiler"))
+			->groupBy('user_tweet')
+			->orderBy("best_spoiler",'desc')
+			->limit(1)
+			->get();
+
+		$best_spoiler = $query_best_spoiler[0]->user_tweet;
+		$datas['best_spoiler'] = $best_spoiler;
+
+  	/* 
+			Get best movie
+			--------
+  	*/
+		$query_best_movies = Tweet::select(DB::raw("movie_title, count(movie_title) as best_movies"))
+			->groupBy('movie_title')
+			->orderBy("best_movies",'desc')
+			->limit(1)
+			->get();
+
+		$best_movie = $query_best_movies[0]->movie_title;
+		$datas['best_movie'] = $best_movie;
+
+		return view('pages.statistics')->with('datas', $datas);	
   }
 }
