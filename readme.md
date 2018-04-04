@@ -1,59 +1,71 @@
-<p align="center"><img src="https://laravel.com/assets/img/components/logo-laravel.svg"></p>
+# FilsDeCulte
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/d/total.svg" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/v/stable.svg" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/license.svg" alt="License"></a>
-</p>
+FilsDeCulte est un bot automatisé qui va spoiler vos amis en se basant sur un titre de film/série donné.
 
-## About Laravel
+## Installation
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel attempts to take the pain out of development by easing common tasks used in the majority of web projects, such as:
+L'installation du projet se fait en différentes parties : 
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+- Clone du dépot && installation des dépendances.   
+```
+ 	git clone https://github.com/HubM/FilsDeCulte.git  
+ 	cd FilsDeCulte  
+	composer install    
+```
 
-Laravel is accessible, yet powerful, providing tools needed for large, robust applications.
+- Création d'une base de donnée vierge avec mysql-cli ou un outil comme phpmyadmin   
+```
+	mysql -u*usernameMYSQL* -p*passwordMYSQL*    
+	CREATE TABLE filsdeculte  
+```
 
-## Learning Laravel
+- Création d'un fichier de configuration propre à votre environnement (.env)  
+ Afin de vous aider, Laravel propose un exemple (.env.example), il suffit donc de le copier et de modifier les informations  
+ liées à votre base de données (MYSQL).    
+```
+	DB_CONNECTION=mysql  
+	DB_HOST=127.0.0.1  
+	DB_PORT=*Votre port mysql*  
+	DB_DATABASE=filsdeculte  
+	DB_USERNAME=*usernameMYSQL*  
+	DB_PASSWORD=*passwordMYSQL*       
+```
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of any modern web application framework, making it a breeze to get started learning the framework.
+- Le projet utilise une lib qui permet de communiquer avec l'API Twitter. Pour la faire fonctionner nous avons besoin  
+de spécifier les clés d'api fournit par twitter. Il faut donc rajouter ces lignes dans notre .env :   
+```
+	TWITTER_CONSUMER_KEY=b6eCa4IidfrAE6AdYvx92cvcO
+	TWITTER_CONSUMER_SECRET=YAhCjOtCS652JGcyfXfFUMSxKXI3Vc23QP0cd3hhVI4YPvF5wn
+	TWITTER_ACCESS_TOKEN=964112547589820416-F12WQr1MYtrFZMYVtgdtf0gd7A1ugj7
+	TWITTER_ACCESS_TOKEN_SECRET=2GEaFUFi0Hew0iFPevkjUjuqH7f9QEPwQRWJX742fGq4C
+```
 
-If you're not in the mood to read, [Laracasts](https://laracasts.com) contains over 1100 video tutorials on a range of topics including Laravel, modern PHP, unit testing, JavaScript, and more. Boost the skill level of yourself and your entire team by digging into our comprehensive video library.
+- Laravel se base sur des systèmes de migrations qui permettent d'automatiser les tâches propres à la base de donné (ajout/modification/suppression de table/). Ainsi pour peupler la base de donnée que nous venons de créer, nous allons lancer la commande ```php artisan migrate``` qui va appliquer les migratiosn dans notre bdd.
 
-## Laravel Sponsors
+- Lancer le projet  
+Pour lancer le projet il faut lancer la commande ```php artisan serve```. Cette commande va lancer un serveur disponible sur le port **8000** du localhost.  
 
-We would like to extend our thanks to the following sponsors for helping fund on-going Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell):
+***NB :*** Si vous rencontrez une erreur comme *No application encryption key has been specified*, il faudra alors utiliser la commande ```php artisan key:generate``` pour générer une clé. Il suffira alors de copier cette clé (ex: *base64:W56DvSuihWx6E73bmRvsLLXp9Mv24HBZ6zma1d/tr+o=*) et l'ajouter dans votre fichier .env, dans APP_KEY comme ceci :  
+```
+APP_KEY=base64:W56DvSuihWx6E73bmRvsLLXp9Mv24HBZ6zma1d/tr+o=
+```
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[British Software Development](https://www.britishsoftware.co)**
-- [Fragrantica](https://www.fragrantica.com)
-- [SOFTonSOFA](https://softonsofa.com/)
-- [User10](https://user10.com)
-- [Soumettre.fr](https://soumettre.fr/)
-- [CodeBrisk](https://codebrisk.com)
-- [1Forge](https://1forge.com)
-- [TECPRESSO](https://tecpresso.co.jp/)
-- [Pulse Storm](http://www.pulsestorm.net/)
-- [Runtime Converter](http://runtimeconverter.com/)
-- [WebL'Agence](https://weblagence.com/)
+Réessayer ensuite de relancer ```php artisan serve``` et rendez-vous sur [ici](http://localhost:8000)
 
-## Contributing
+## Lancement de la commande  
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Une fois l'installation reussi (affichage de la page d'accueil sur l), nous devons tester que la commande qui execute toutes les actions de  
+récupération et de tri des tweets fonctionnent.
 
-## Security Vulnerabilities
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+- Lancer la commande ```php artisan tweets:get```. Si vous n'avez pas de réponse ou d'erreur, c'est que la commande marche. 
 
-## License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+
+
+
+
+
+
+
