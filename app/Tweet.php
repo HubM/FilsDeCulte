@@ -62,9 +62,6 @@ class Tweet extends Model
     }
 
     public static function insertTweetInDatabase($singleTweet) {
-
-    	// dd($singleTweet);
-
     	$tweet = new Tweet;
 
     	$tweet->id_tweet = $singleTweet['id_tweet'];
@@ -77,6 +74,7 @@ class Tweet extends Model
     	$tweet->spoil = '';
     	$tweet->isSpoiled = $singleTweet['isSpoiled'];
       $tweet->isFailed = 0;
+      $tweet->movie_title_real_name = '';
 
     	$tweet->save();
     }

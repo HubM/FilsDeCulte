@@ -42,7 +42,9 @@ class connectAlgoliaAndGetSpoilJob implements ShouldQueue
     $client = new \AlgoliaSearch\Client('KMJ42U25W4', '1458f0776b9eb5750afc6566782ce6c9');
     $index = $client->initIndex('movies');
 
+
     $query = (object) $index->search($this->movie);
+
 
     // We make a query to get the current tweet
     $tweet = Tweet::where('id_tweet', $this->tweet);
@@ -54,6 +56,8 @@ class connectAlgoliaAndGetSpoilJob implements ShouldQueue
     */
     if($query->nbHits > 0) {
       $spoil = $query->hits[0]["spoil"];
+      $movie_real_name = $query->hits[0]["movie"];
+
       
       if(is_array($spoil)) {
         $rand = array_rand($spoil, 1);
@@ -65,7 +69,7 @@ class connectAlgoliaAndGetSpoilJob implements ShouldQueue
       /*
         we get the final spoil, and update in our database the tweet associated
       */
-      $tweet->update(['spoil' => $response]);
+      $tweet->update(['spoil' => $response, 'movie_title_real_name' => $movie_real_name]);
 
 
     } else {

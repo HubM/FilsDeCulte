@@ -81,13 +81,13 @@ class StatsController extends Controller
 			Get best movie
 			--------
   	*/
-		$query_best_movies = Tweet::select(DB::raw("movie_title, count(movie_title) as best_movies"))
-			->groupBy('movie_title')
+		$query_best_movies = Tweet::select(DB::raw("movie_title_real_name, count(movie_title_real_name) as best_movies"))
+			->groupBy('movie_title_real_name')
 			->orderBy("best_movies",'desc')
 			->limit(1)
 			->get();
 
-		$best_movie = $query_best_movies[0]->movie_title;
+		$best_movie = $query_best_movies[0]->movie_title_real_name;
 		$datas['best_movie'] = $best_movie;
 
 		return view('pages.statistics')->with('datas', $datas);	
