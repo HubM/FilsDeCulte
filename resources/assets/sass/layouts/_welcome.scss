@@ -1,13 +1,32 @@
 .welcome {
 	height: 100vh;
 	width: 100%;
-	background-color: $color2;
 	display: flex;
 	justify-content:center;
 	align-items:center;
 	text-align: center;
 
+	background: $color1;
+  background: -moz-linear-gradient(-45deg, $color1 0%, $color2 100%);
+  background: -webkit-linear-gradient(-45deg, $color1 0%,$color2 100%);
+  background: linear-gradient(135deg, $color1 0%,$color2 100%);
+
 	header {
 		color: #fff;
+	
+		img {
+			max-width: 190px;
+			margin-bottom: 20px;
+		}
+
+		h1 {
+			text-transform: uppercase;
+			letter-spacing: 1px;
+			font-weight:600;
+			span {
+				color: $color3;
+			}	
+		}
 	}
+
 }
