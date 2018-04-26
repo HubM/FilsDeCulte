@@ -67,6 +67,11 @@ class GetTweetsFDC extends Command
           /* For each tweet, we check if the model Tweet validate our tweet, 
           and add it to the selectedTweets array */          
           if(Tweet::isEligible($tweet)) {
+              if(Tweet::isNotDuplicate($tweet)){
+                  continue;
+              } else {
+                  exit();
+              }
             $selectedTweets[$key]['id_tweet'] = $tweet->id_str;
             $selectedTweets[$key]['user'] = $tweet->user->screen_name;
             $selectedTweets[$key]['user_id'] = $tweet->user->id_str;

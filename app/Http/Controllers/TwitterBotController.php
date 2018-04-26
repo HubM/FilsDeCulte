@@ -31,7 +31,10 @@ class TwitterBotController extends Controller
     $selectedTweets = [];
 
    	// check all tweet retourned 
-   	for ($tweet=0; $tweet < $numberOfTweets; $tweet++) {  
+   	for ($tweet=0; $tweet < $numberOfTweets; $tweet++) {
+
+   	    var_dump($allTweets->statuses);
+   	    die();
 
       // get the time of each tweet and convert it to Carbon date format
       $initial_date = $allTweets->statuses[$tweet]->created_at;
@@ -44,7 +47,6 @@ class TwitterBotController extends Controller
       $source = $allTweets->statuses[$tweet]->user->screen_name;
 
       $existingTweet = DB::table('tweets')->where('id_tweet', $allTweets->statuses[$tweet]->id_str)->get()->toArray();
-
 
       if (!empty($existingTweet)) {
         $error = ['duplicate', $existingTweet];
@@ -186,7 +188,7 @@ class TwitterBotController extends Controller
       that the response the request has been made.
     */
     if(!empty($error)){
-      $message = 'Il est possible que la réponse est déjà été envoyé. Merci de réésayer plus tard.';
+      $message = 'Il est possible que la réponse est déjà été envoyé. Merci de réessayer plus tard.';
       $target_name = $error[1][0]->user_tweet;
       $parameters_message_target = [
           'status' =>  '@'.$target_name. ' '.$message

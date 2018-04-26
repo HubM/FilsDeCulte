@@ -90,6 +90,12 @@ class StatsController extends Controller
 		$best_movie = $query_best_movies[0]->movie_title_real_name;
 		$datas['best_movie'] = $best_movie;
 
+		/*
+		 3 last movies
+			--------
+		 */
+
+
 		return view('pages.statistics')->with('datas', $datas);	
   }
 }

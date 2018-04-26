@@ -15,6 +15,8 @@
 // 	return view('welcome');
 // });
 
+Route::get('/test', 'TwitterBotController@getNewTweets');
+
 Route::get('/', function() {
 	return view('pages.hello');
 });
