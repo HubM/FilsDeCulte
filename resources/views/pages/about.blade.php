@@ -13,6 +13,7 @@
 		<main>
 			<p>Spoil your friends is one of your favorite hobbies ? We are the bad-friend you need !</p>
 			<p>Our bot is the evil incarnate. It's mission ? Spoil everybody !</p>
+			<a href="/our-stats" class="btn btn-1">Check our statistics</a>
 		</main>
 	</section>
 	
@@ -47,9 +48,9 @@
 						<li><a href="https://www.algolia.com/" target="_blank">Algolia</a></li>
 					</ul>
 
-					{{-- <a href="/our-stats" class="btn btn-1">Our statistics</a> --}}
 				</main>
 			</section>
+			
 		</div>
 </div>
 @endsection

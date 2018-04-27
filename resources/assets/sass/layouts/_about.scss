@@ -29,19 +29,9 @@
 	}
 
 	h1 {
-		font-weight: 700;
-    font-size: 70px;
-    line-height: 65px;
-		color: $color3;
-		margin-bottom: 30px;
-
 		img {
 			margin: 0;
 		}
 
-		@media (min-width: 	992px) {
-	    font-size: 100px;
-	    line-height: 95px;			
-		}
 	}
 }

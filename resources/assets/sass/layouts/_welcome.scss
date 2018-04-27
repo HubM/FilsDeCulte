@@ -6,11 +6,6 @@
 	align-items:center;
 	text-align: center;
 
-	background: $color1;
-  background: -moz-linear-gradient(-45deg, $color1 0%, $color2 100%);
-  background: -webkit-linear-gradient(-45deg, $color1 0%,$color2 100%);
-  background: linear-gradient(135deg, $color1 0%,$color2 100%);
-
 	header {
 		color: #fff;
 	
@@ -23,6 +18,9 @@
 			text-transform: uppercase;
 			letter-spacing: 1px;
 			font-weight:600;
+	    font-size: 40px;
+    	color: #fff;
+    	margin-bottom: 0;
 			span {
 				color: $color3;
 			}	

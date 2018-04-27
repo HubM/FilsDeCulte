@@ -10020,6 +10020,38 @@ p {
   margin: 0;
 }
 
+a {
+  text-decoration: none;
+  color: #00d2ff;
+}
+
+h1 {
+  font-weight: 700;
+  font-size: 70px;
+  line-height: 65px;
+  color: #161616;
+  margin-bottom: 30px;
+}
+
+@media (min-width: 992px) {
+  h1 {
+    font-size: 100px;
+    line-height: 95px;
+  }
+}
+
+.logo {
+  max-width: 100px;
+  margin: 50px 0;
+}
+
+.colored {
+  background: #00d2ff;
+  background: linear-gradient(135deg, #00d2ff 0%, #3a7bd5 100%);
+  min-height: 100vh;
+  height: 100%;
+}
+
 /* =================
 Components
 ================= */
@@ -10062,8 +10094,6 @@ Layouts
       -ms-flex-align: center;
           align-items: center;
   text-align: center;
-  background: #00d2ff;
-  background: linear-gradient(135deg, #00d2ff 0%, #3a7bd5 100%);
 }
 
 .welcome header {
@@ -10079,6 +10109,9 @@ Layouts
   text-transform: uppercase;
   letter-spacing: 1px;
   font-weight: 600;
+  font-size: 40px;
+  color: #fff;
+  margin-bottom: 0;
 }
 
 .welcome header h1 span {
@@ -10115,22 +10148,19 @@ Layouts
   margin: 50px 0;
 }
 
-.intro h1 {
-  font-weight: 700;
-  font-size: 70px;
-  line-height: 65px;
-  color: #161616;
-  margin-bottom: 30px;
-}
-
 .intro h1 img {
   margin: 0;
 }
 
-@media (min-width: 992px) {
-  .intro h1 {
-    font-size: 100px;
-    line-height: 95px;
-  }
+.infos_cards {
+  margin-top: 50px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  padding-left: 0;
+}
+
+.card {
+  display: block;
 }
 

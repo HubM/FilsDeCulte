@@ -1,7 +1,7 @@
 <!-- Stored in resources/views/pages/hello.blade.php -->
 @extends('layout.base')
 
-@section('body-class')welcome @endsection
+@section('body-class')welcome colored @endsection
 @section('content')
 	<section>
 		<header>
