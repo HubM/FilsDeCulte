@@ -2,15 +2,15 @@
 Boostrap & Fonts
 ================= */ 
 @import '~bootstrap/scss/bootstrap';
-@import url("https://fonts.googleapis.com/css?family=Raleway:300,400,600");
+@import url('https://fonts.googleapis.com/css?family=Poppins:400,600');
 
 
 
 /* =================
 Variables & Reset
 ================= */ 
-@import "reset";
 @import "variables";
+@import "reset";
 
 
 /* =================
@@ -23,4 +23,6 @@ Components
 Layouts
 ================= */ 
 @import "layouts/welcome";
+@import "layouts/about";
+@import "layouts/stats";
 

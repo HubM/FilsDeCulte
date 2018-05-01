@@ -1,3 +1,39 @@
-h1 {
-	margin: 0;
+body {
+	font-family: $font1;
 }
+
+p {
+margin: 0;
+}
+
+a {
+	text-decoration: none;
+	color: $color1;
+}
+
+
+h1 {
+	font-weight: 700;
+  font-size: 70px;
+  line-height: 65px;
+	color: $color3;
+	margin-bottom: 30px;
+
+	@media (min-width: 	992px) {
+	  font-size: 100px;
+    line-height: 95px;			
+	}
+}
+.logo {
+	max-width: 100px;
+	margin: 50px 0;
+}
+
+.colored {
+	background: $color1;
+  background: -moz-linear-gradient(-45deg, $color1 0%, $color2 100%);
+  background: -webkit-linear-gradient(-45deg, $color1 0%,$color2 100%);
+  background: linear-gradient(135deg, $color1 0%,$color2 100%);
+  min-height: 100vh;
+  height: 100%;
+ }
