@@ -10,13 +10,17 @@
 			<h1>Help us ?</h1>
 			
 			@if(!empty($message))
-				@if($errors['movie'] == null || $errors['spoil'] == null)
+				@if($errors['movie'] == null || $errors['spoil'] == null || $errors['user'] == null)
 					<div class="alert alert-danger col-8 offset-2" role="alert">
 	  				Oops ! Be sure to add a movie title and a spoil..
 	  				<img src="./images/sad-face.png" alt="Go to hell Fils de Culte !">
 					</div>
 					{{ Form::open(array('url' => '#', 'class' => 'row')) }}
 						<div class="col-6 offset-3">
+							{{ Form::text('user', null, array(
+							'class' => 'form-control',
+							'placeholder' => ($errors['user'] == null) ? 'Your username...' : $errors['user'],
+						)) }}
 							{{ Form::text('movie', null, array(
 								'class' => 'form-control',
 								'placeholder' => ($errors['movie'] == null) ? 'Your movie...' : $errors['movie'],
@@ -40,6 +44,10 @@
 			@else 
 				{{ Form::open(array('url' => '#', 'class' => 'row')) }}
 					<div class="col-6 offset-3">
+						{{ Form::text('user', null, array(
+							'class' => 'form-control',
+							'placeholder' =>'Your username...',
+						)) }}
 						{{ Form::text('movie', null, array(
 							'class' => 'form-control',
 							'placeholder' => 'Your movie...',
