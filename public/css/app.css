@@ -10198,3 +10198,21 @@ Layouts
   right: 20px;
 }
 
+.users-spoil {
+  margin-top: 100px;
+}
+
+.users-spoil h1 {
+  margin-bottom: 100px;
+}
+
+.users-spoil .actions {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.users-spoil .actions input[type="radio"]::checked + label {
+  color: blue;
+}
+
