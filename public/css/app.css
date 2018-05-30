@@ -10077,6 +10077,14 @@ button,
   background-color: #00bde6;
 }
 
+.btn-primary {
+  max-width: 200px;
+  display: block;
+  margin: 30px auto;
+  background-color: #00d2ff;
+  border: none;
+}
+
 /* =================
 Layouts
 ================= */
@@ -10162,5 +10170,31 @@ Layouts
 
 .card {
   display: block;
+}
+
+.help-us {
+  margin-top: 100px;
+}
+
+.help-us h1 {
+  text-align: center;
+}
+
+.help-us form {
+  margin-top: 50px;
+}
+
+.help-us input[type="text"] {
+  margin-bottom: 30px;
+}
+
+.help-us .alert {
+  position: relative;
+}
+
+.help-us .alert img {
+  max-width: 25px;
+  position: absolute;
+  right: 20px;
 }
 

@@ -10,6 +10,9 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use \App\Tweet;
 use Twitter;
 
+
+define("URL_HELP", "https://goo.gl/WKrpaq");
+
 class connectAlgoliaAndGetSpoilJob implements ShouldQueue
 {
   use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
@@ -86,7 +89,7 @@ class connectAlgoliaAndGetSpoilJob implements ShouldQueue
       $tweetCreator_movie = $Badtweet->movie_title;
 
       $parametersDirectMessageFail = [
-        'status' => "Sorry @$tweetCreator, we doesn't know your movie #$tweetCreator_movie :/",
+        'status' => "Sorry @$tweetCreator, we doesn't know your movie #$tweetCreator_movie :/. You maybe can help us ? ". URL_HELP,
         'in_reply_to_status_id' => $tweetCreator_tweet_id
       ];
       Twitter::postTweet($parametersDirectMessageFail);
@@ -99,8 +102,7 @@ class connectAlgoliaAndGetSpoilJob implements ShouldQueue
       */
       $tweet->update(['isFailed' => 1]);
 
-      exit("stop the execution of the tweet n°$tweetCreator_tweet_id");
-
+      exit("stop the execution of the tweet n°$tweetCreator_tweet_id (spoil not found)");
 
     }
 

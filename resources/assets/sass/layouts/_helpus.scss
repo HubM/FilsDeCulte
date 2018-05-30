@@ -1,0 +1,27 @@
+.help-us {
+	margin-top: 100px;
+
+	h1 {
+		text-align: center;
+	}
+
+	form {
+		margin-top: 50px;
+	}
+
+	input {
+
+		&[type="text"] {
+			margin-bottom: 30px;
+		} 
+	}
+
+	.alert {
+		position: relative;
+		img {
+			max-width: 25px;
+			position: absolute;
+			right: 20px;
+		}
+	}
+}
