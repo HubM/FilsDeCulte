@@ -1,4 +1,3 @@
-<!-- Stored in resources/views/pages/all-tweets.blade.php -->
 @extends('layout.base')
 
 @section('content')
