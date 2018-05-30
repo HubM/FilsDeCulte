@@ -13,10 +13,6 @@ use \App\Jobs\postBotTweetResponseJob;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 
 use Carbon\Carbon;
-// use \App\Http\Controllers\getSpoilFromAlgoliaController;
-
-
-// define("BOT_ACCOUNT", 'FilsDeCulte');
 
 class GetTweetsFDC extends Command
 {
@@ -63,15 +59,15 @@ class GetTweetsFDC extends Command
         ];        
         $allTweets = Twitter::getSearch($parameters);
 
+
         foreach ($allTweets->statuses as $key => $tweet) {
           /* For each tweet, we check if the model Tweet validate our tweet, 
           and add it to the selectedTweets array */          
           if(Tweet::isEligible($tweet)) {
-              if(Tweet::isNotDuplicate($tweet)){
-                  continue;
-              } else {
+              if(!Tweet::isNotDuplicate($tweet)){
                   exit();
-              }
+              } 
+
             $selectedTweets[$key]['id_tweet'] = $tweet->id_str;
             $selectedTweets[$key]['user'] = $tweet->user->screen_name;
             $selectedTweets[$key]['user_id'] = $tweet->user->id_str;
