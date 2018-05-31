@@ -10160,16 +10160,42 @@ Layouts
   margin: 0;
 }
 
-.infos_cards {
-  margin-top: 50px;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
+.stats-list {
   padding-left: 0;
+  list-style: none;
+  padding-left: 0;
+  margin-top: 50px;
 }
 
-.card {
+.stats-list li {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+@media (min-width: 992px) {
+  .stats-list li {
+    margin-bottom: 0;
+  }
+}
+
+.stats-list li img {
   display: block;
+  max-width: 90px;
+  margin: 0 auto 20px auto;
+}
+
+.stats-list li h2 {
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 30px;
+}
+
+.stats-list li span {
+  color: #00d2ff;
+}
+
+.stats-list li.tweets p {
+  padding: 0 10px;
 }
 
 .help-us {
