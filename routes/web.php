@@ -28,11 +28,10 @@ Route::get('/help-us', function() {
 Route::post('/help-us', 'HelpUsController@getHelpSpoil');
 
 /* Manager user spoils */
-Route::get('/users-spoil', 'HelpUsController@getAllUserSpoils');
-Route::post('/users-spoil', 'HelpUsController@saveManagedUsersSpoils');
+Route::get('/users-spoil', 'UsersSpoilController@getAllUserSpoils');
+Route::post('/users-spoil', 'UsersSpoilController@saveManagedUsersSpoils');
 
 
 
 Auth::routes();
-
 Route::get('/home', 'HomeController@index')->name('home');
