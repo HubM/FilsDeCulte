@@ -1,0 +1,52 @@
+@keyframes logo_translate{
+    0%{
+        transform: translateY(0rem);
+    }
+    100%{
+        transform: translateY(-2rem);
+    }
+}
+
+@keyframes eye_move{
+    0%{
+        transform: translate(0rem, 0rem);
+    }
+    15%{
+        transform: translate(1rem,0rem);
+    }
+    30%{
+        transform: translate(-1rem,0rem);
+    }
+    45%{
+        transform: translate(0rem,0rem);
+    }
+}
+
+@keyframes antenna_move{
+    // 0%{
+    //     transform: translate(0rem, 0rem) rotate(0deg);
+    // }
+    0%{
+        transform: rotate(-8deg) translate(1.9rem,0);
+    }
+    100%{
+        transform: rotate(8deg) translate(-1.9rem,0);
+    }
+    // 100%{
+    //     transform: translate(0rem, 0rem) rotate(0deg);
+    // }
+}
+
+.logo-fdc{
+    animation: 2.5s logo_translate infinite alternate-reverse cubic-bezier(.5,0,0.5,1);
+
+    #eye{
+        animation: 4s eye_move infinite cubic-bezier(.5,0,0.5,1);
+        animation-delay: 1s;
+    }
+
+    .antenna{
+        animation: 2s antenna_move infinite alternate-reverse cubic-bezier(.5,0,0.5,1) forwards;
+        transform-origin: center;
+    }
+}
