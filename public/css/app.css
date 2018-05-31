@@ -10325,6 +10325,11 @@ Layouts
   margin-top: 50px;
 }
 
+.help-us input,
+.help-us textare {
+  font-size: 1.5em;
+}
+
 .help-us input[type="text"] {
   margin-bottom: 30px;
 }
