@@ -10318,6 +10318,7 @@ Layouts
       -ms-flex-align: center;
           align-items: center;
   text-align: center;
+  max-width: 100%;
 }
 
 .welcome header {
