@@ -1,4 +1,3 @@
-<!-- Stored in resources/views/pages/about.blade.php -->
 @extends('layout.base')
 @section('body-class')stats colored @endsection
 @section('content')

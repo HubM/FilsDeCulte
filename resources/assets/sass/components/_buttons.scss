@@ -16,5 +16,13 @@ button,
 	&:hover {
 		color: #fff;
 		background-color: darken($color1,5);
-	}
+	}	
+}
+
+.btn-primary {
+	max-width: 200px;
+	display: block;
+	margin: 30px auto;
+	background-color: #00d2ff;
+	border: none;
 }
