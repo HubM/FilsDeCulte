@@ -10012,6 +10012,11 @@ Variables & Reset
 			FONTS
 ================= */
 
+html {
+  font-size: .625em;
+  font-size: calc(1em * .625);
+}
+
 body {
   font-family: "Poppins";
 }
@@ -10083,6 +10088,115 @@ button,
   margin: 30px auto;
   background-color: #00d2ff;
   border: none;
+}
+
+@-webkit-keyframes logo_translate {
+  0% {
+    -webkit-transform: translateY(0rem);
+            transform: translateY(0rem);
+  }
+
+  100% {
+    -webkit-transform: translateY(-2rem);
+            transform: translateY(-2rem);
+  }
+}
+
+@keyframes logo_translate {
+  0% {
+    -webkit-transform: translateY(0rem);
+            transform: translateY(0rem);
+  }
+
+  100% {
+    -webkit-transform: translateY(-2rem);
+            transform: translateY(-2rem);
+  }
+}
+
+@-webkit-keyframes eye_move {
+  0% {
+    -webkit-transform: translate(0rem, 0rem);
+            transform: translate(0rem, 0rem);
+  }
+
+  15% {
+    -webkit-transform: translate(1rem, 0rem);
+            transform: translate(1rem, 0rem);
+  }
+
+  30% {
+    -webkit-transform: translate(-1rem, 0rem);
+            transform: translate(-1rem, 0rem);
+  }
+
+  45% {
+    -webkit-transform: translate(0rem, 0rem);
+            transform: translate(0rem, 0rem);
+  }
+}
+
+@keyframes eye_move {
+  0% {
+    -webkit-transform: translate(0rem, 0rem);
+            transform: translate(0rem, 0rem);
+  }
+
+  15% {
+    -webkit-transform: translate(1rem, 0rem);
+            transform: translate(1rem, 0rem);
+  }
+
+  30% {
+    -webkit-transform: translate(-1rem, 0rem);
+            transform: translate(-1rem, 0rem);
+  }
+
+  45% {
+    -webkit-transform: translate(0rem, 0rem);
+            transform: translate(0rem, 0rem);
+  }
+}
+
+@-webkit-keyframes antenna_move {
+  0% {
+    -webkit-transform: rotate(-8deg) translate(1.9rem, 0);
+            transform: rotate(-8deg) translate(1.9rem, 0);
+  }
+
+  100% {
+    -webkit-transform: rotate(8deg) translate(-1.9rem, 0);
+            transform: rotate(8deg) translate(-1.9rem, 0);
+  }
+}
+
+@keyframes antenna_move {
+  0% {
+    -webkit-transform: rotate(-8deg) translate(1.9rem, 0);
+            transform: rotate(-8deg) translate(1.9rem, 0);
+  }
+
+  100% {
+    -webkit-transform: rotate(8deg) translate(-1.9rem, 0);
+            transform: rotate(8deg) translate(-1.9rem, 0);
+  }
+}
+
+.logo-fdc {
+  animation: 2.5s logo_translate infinite alternate-reverse cubic-bezier(0.5, 0, 0.5, 1);
+}
+
+.logo-fdc #eye {
+  -webkit-animation: 4s eye_move infinite cubic-bezier(0.5, 0, 0.5, 1);
+          animation: 4s eye_move infinite cubic-bezier(0.5, 0, 0.5, 1);
+  -webkit-animation-delay: 1s;
+          animation-delay: 1s;
+}
+
+.logo-fdc .antenna {
+  animation: 2s antenna_move infinite alternate-reverse cubic-bezier(0.5, 0, 0.5, 1) forwards;
+  -webkit-transform-origin: center;
+          transform-origin: center;
 }
 
 /* =================

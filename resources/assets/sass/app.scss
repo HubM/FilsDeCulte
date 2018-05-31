@@ -1,6 +1,6 @@
 /* =================
 Boostrap & Fonts
-================= */ 
+================= */
 @import '~bootstrap/scss/bootstrap';
 @import url('https://fonts.googleapis.com/css?family=Poppins:400,600');
 
@@ -8,23 +8,23 @@ Boostrap & Fonts
 
 /* =================
 Variables & Reset
-================= */ 
+================= */
 @import "variables";
 @import "reset";
 
 
 /* =================
 Components
-================= */ 
+================= */
 @import "components/buttons";
+@import "components/logo";
 
 
 /* =================
 Layouts
-================= */ 
+================= */
 @import "layouts/welcome";
 @import "layouts/about";
 @import "layouts/stats";
 @import "layouts/helpus";
 @import "layouts/usersspoil";
-
