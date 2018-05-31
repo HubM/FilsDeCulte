@@ -8,12 +8,33 @@
 	
 	.actions {
 		display: flex;
+		
+		& > div:first-of-type {
+			margin-right: 10px;
+		}
+
+		span {
+	    padding: 5px 10px;
+	    border-width: 1px;
+	    border-style: solid;
+	    border-color: $DarkBlue; 
+    	border-radius: 10px;
+    	margin-bottom: 0;
+			font-size:10px;
+			text-transform: uppercase;
+			letter-spacing: 1px;
+    	transition: all 0.25s ease-in-out;
+		}
+
 		input[type="radio"] {
-			&::checked {
-				& + label {
-					color:blue;
-				} 
+			display: none;
+			&:checked + span {
+				background: $color1;
+				border-color: $color1;
+				color: #fff;
 			}
 		}
+
+
 	}
 }

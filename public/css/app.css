@@ -10212,7 +10212,31 @@ Layouts
   display: flex;
 }
 
-.users-spoil .actions input[type="radio"]::checked + label {
-  color: blue;
+.users-spoil .actions > div:first-of-type {
+  margin-right: 10px;
+}
+
+.users-spoil .actions span {
+  padding: 5px 10px;
+  border-width: 1px;
+  border-style: solid;
+  border-color: #3E7FD3;
+  border-radius: 10px;
+  margin-bottom: 0;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  -webkit-transition: all 0.25s ease-in-out;
+  transition: all 0.25s ease-in-out;
+}
+
+.users-spoil .actions input[type="radio"] {
+  display: none;
+}
+
+.users-spoil .actions input[type="radio"]:checked + span {
+  background: #00d2ff;
+  border-color: #00d2ff;
+  color: #fff;
 }
 

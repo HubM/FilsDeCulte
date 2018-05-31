@@ -18,7 +18,7 @@ class addSpoilToAlgoliaCollectionJob implements ShouldQueue
      *
      * @return void
      */
-    public function __construct(object $spoil)
+    public function __construct($spoil)
     {
         $this->spoil = $spoil;
     }

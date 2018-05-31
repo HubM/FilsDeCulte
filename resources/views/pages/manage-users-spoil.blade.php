@@ -22,14 +22,17 @@
 		      	<td>{{ $spoil->spoil }}</td>
 		      	<td class="actions">
 		      		<div>
-		      			<label>Keep</label>
-		      			{{ Form::radio('action-spoil-'.$spoil->id, '1', array(
-									'required'
-		      			)) }}
+		     
+		      			<label>
+      			 			{{ Form::radio('action-spoil-'.$spoil->id, '1', true) }}
+		      				<span>Keep</span>
+		      			</label>
 		      		</div>
 			      	<div>
-			      		<label>Leave</label>
+			      		<label>
 								{{ Form::radio('action-spoil-'.$spoil->id, '0') }}
+			      			<span>Leave</span>
+			      		</label>
 		  	    	</div>
 		   	    </td>
 					</tr>

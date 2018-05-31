@@ -25,12 +25,10 @@ Route::get('/our-stats', 'StatsController@getStats');
 Route::get('/help-us', function() {
 	return view('pages.help-us');
 });
-
 Route::post('/help-us', 'HelpUsController@getHelpSpoil');
 
 /* Manager user spoils */
 Route::get('/users-spoil', 'HelpUsController@getAllUserSpoils');
-
 Route::post('/users-spoil', 'HelpUsController@saveManagedUsersSpoils');
 
 
