@@ -20,7 +20,7 @@ class GetScrap extends Command
      *
      * @var string
      */
-    protected $description = 'Get spoils with the scrap of 2 websites : etenfaitalafin.fr and spoilme.io';
+    protected $description = 'Get spoils with the scrap of etenfaitalafin.fr ';
 
     /**
      * Create a new command instance.
@@ -33,18 +33,62 @@ class GetScrap extends Command
         parent::__construct();
     }
 
-    public function scrapMap (){
-        $map = [];
-        $content = file_get_contents('https://spoilme.io/sitemap.xml');
-        $xml = simplexml_load_string($content);
-        foreach ($xml as $url) {
-            $text = (string)$url->loc;
-            if (strpos($text, '/fr/') !== false && strpos($text, '/movies/') !== false) {
-                array_push($map, $text);
-            }
+    //Scraping site map of spoilme.io
+    // public function scrapMap (){
+    //     $map = [];
+    //     $content = file_get_contents('https://spoilme.io/sitemap.xml');
+    //     $xml = simplexml_load_string($content);
+    //     foreach ($xml as $url) {
+    //         $text = (string)$url->loc;
+    //         if (strpos($text, '/fr/') !== false && strpos($text, '/movies/') !== false) {
+    //             array_push($map, $text);
+    //         }
+    //     }
+    //     $json = json_encode($map);
+    //     Storage::put('data_sitemap.json', $json);
+    // }
+    //Scraping spoil in each url of sitemap of spoilme.io
+    // public function scrapSpoilme ($arrayScrap){
+    //     $map = $arrayScrap = json_decode(\Storage::get('data_sitemap.json'),true);
+    //     foreach ($map as $url) {
+    //         $client = new Client();
+    //         $guzzleClient = new \GuzzleHttp\Client(array(
+    //             'timeout' => 10000,
+    //             'verify' => false,
+    //         ));
+    //         $client->setClient($guzzleClient);
+    //
+    //         $crawler = $client->request('GET', $url, ['timeout' => 1000]);
+    //         $crawler->filter('title')->each(function ($node) {
+    //             print("\n\n".$node->text()."\n");
+    //             $scrap = $node->text();
+    //         });
+    //
+    //         break;
+    //     }
+    // }
+
+    public function getAlgolia() {
+        $tab = [];
+        $client = new \AlgoliaSearch\Client('KMJ42U25W4', 'fe5cb99857161f277a1c9b21199cf8e4');
+        $index  = $client->initIndex('movies');
+        $query = (object) $index->search('');
+        foreach ($query->hits as $key) {
+            array_push($tab, ['movie'=>$key['movie'], 'spoil'=>$key['spoil']]);
         }
-        $json = json_encode($map);
-        Storage::put('data_sitemap.json', $json);
+        return($tab);
+    }
+
+    public function addToAlgolia($scrap) {
+        $client = new \AlgoliaSearch\Client('KMJ42U25W4', 'fe5cb99857161f277a1c9b21199cf8e4');
+        $index  = $client->initIndex('movies');
+
+        $add_spoil = [
+            'movie' => $scrap['movie'],
+            'spoil' => $scrap['spoil']
+        ];
+
+        $index->addObject($add_spoil);
     }
 
     public function parseHTML ($url, $targets) {
@@ -66,38 +110,12 @@ class GetScrap extends Command
                 return $arrayScrap;
             }
         }
+        //add spoil to algolia and arrayScrap (for testing)
+        print("\n" . 'New movie : ' . $scrap['movie']);
+        $this->addToAlgolia($scrap);
         array_push($arrayScrap, $scrap);
         return $arrayScrap;
     }
-
-    public function writeJSON ($fichier, $scrap){
-        $tab=[];
-        foreach ($scrap as $data_film) {
-            array_push($tab, ['movie'=>$data_film['movie'], 'spoil'=>$data_film['spoil']]);
-        }
-        $json = json_encode($tab);
-        Storage::put('data_scrap.json', $json);
-    }
-
-    // public function scrapSpoilme ($arrayScrap){
-    //     $map = $arrayScrap = json_decode(\Storage::get('data_sitemap.json'),true);
-    //     foreach ($map as $url) {
-    //         $client = new Client();
-    //         $guzzleClient = new \GuzzleHttp\Client(array(
-    //             'timeout' => 10000,
-    //             'verify' => false,
-    //         ));
-    //         $client->setClient($guzzleClient);
-    //
-    //         $crawler = $client->request('GET', $url, ['timeout' => 1000]);
-    //         $crawler->filter('title')->each(function ($node) {
-    //             print("\n\n".$node->text()."\n");
-    //             $scrap = $node->text();
-    //         });
-    //
-    //         break;
-    //     }
-    // }
 
     public function scrapEtenfait ($ite=200, $arrayScrap){
 
@@ -112,7 +130,7 @@ class GetScrap extends Command
             $scrap = $this->parseHTML($redirect, ['p', 'title']);
             $spoil = 'A la fin' . explode("à la fin,", $scrap[0])[1];
             $title = explode(" - Et en fait", $scrap[1])[0];
-            $scrap = ['movie'=>$title, 'spoil'=>[$spoil]];
+            $scrap = ['movie'=>$title, 'spoil'=>$spoil];
 
             //verify if scrap not in array
             $arrayScrap = $this->verifyData($scrap, $arrayScrap);
@@ -120,7 +138,7 @@ class GetScrap extends Command
             //sleep
             sleep(rand(0, 1));
         }
-        $this->writeJSON(\Storage::url('data_scrap.json'), $arrayScrap);
+        return($arrayScrap);
     }
 
     /**
@@ -130,11 +148,14 @@ class GetScrap extends Command
      */
     public function handle()
     {
-        print('STARTING THE SCRAP');
-        $arrayScrap = json_decode(\Storage::get('data_scrap.json'),true);
-        // $this->scrapMap();s
-        // $this->scrapSpoilme($arrayScrap);
-        $this->scrapEtenfait(20,$arrayScrap);
-        print("\n".'FINISHING THE SCRAP');
+        print('---STARTING THE SCRAP---');
+
+        //get array of spoils from algolia
+        $arrayScrap = $this->getAlgolia();
+
+        //get new spoil from etenfaitalafin.fr
+        $arrayScrap = $this->scrapEtenfait(20,$arrayScrap);
+
+        print("\n".'---FINISHING THE SCRAP---');
     }
 }
