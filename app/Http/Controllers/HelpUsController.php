@@ -10,6 +10,11 @@ use Illuminate\Foundation\Bus\DispatchesJobs;
 class HelpUsController extends Controller
 {
 
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
   /*
     This function get the post request from the form (/help-us)
     and verify that's the input value aren't null.
