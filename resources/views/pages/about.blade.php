@@ -7,7 +7,7 @@
 			<a href="./">
 				<img src="./images/logo_fdc.svg" alt="Logo fils de culte" class="logo">
 			</a>
-			<h1>The worst bot on twitter <img src="https://emojipedia-us.s3.amazonaws.com/thumbs/320/twitter/134/reversed-hand-with-middle-finger-extended_1f595.png" alt=""></h1>
+			<h1>The worst bot on <a href="https://twitter.com/FilsDeCulte" target="_blank">twitter</a> <img src="https://emojipedia-us.s3.amazonaws.com/thumbs/320/twitter/134/reversed-hand-with-middle-finger-extended_1f595.png" alt=""></h1>
 		</header>	
 		<main>
 			<p>Spoil your friends is one of your favorite hobbies ? We are the bad-friend you need !</p>
