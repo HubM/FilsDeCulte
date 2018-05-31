@@ -32,3 +32,7 @@ Route::get('/users-spoil', 'HelpUsController@getAllUserSpoils');
 Route::post('/users-spoil', 'HelpUsController@saveManagedUsersSpoils');
 
 
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
