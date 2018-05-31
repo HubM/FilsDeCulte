@@ -1,13 +1,11 @@
 @extends('layout.base')
 @section('body-class')help-us @endsection
 @section('content')
-<div class="container">
+	@include('layout.logged-access')
+
 	<section>
 		<header>
-
-			
-
-			<h1>Help us ?</h1>
+			<h1 class="text-center">Help us ?</h1>
 			
 			@if(!empty($message))
 				@if($errors['movie'] == null || $errors['spoil'] == null || $errors['user'] == null)
@@ -64,5 +62,4 @@
 			@endif
 		</header>
 	</section>
-</div>
 @endsection

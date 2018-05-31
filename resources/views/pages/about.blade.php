@@ -1,10 +1,18 @@
 @extends('layout.base')
 @section('body-class')about @endsection
 @section('content')
-	<div class="container">
+	
+  @if (session('status'))
+    <div class="alert alert-success">
+      {{ session('status') }}
+    </div>
+  @endif
+
+	@include('layout.logged-access')
+
 	<section class="intro">
 		<header>
-			<a href="./">
+			<a href="./about">
 				<img src="./images/logo_fdc.svg" alt="Logo fils de culte" class="logo">
 			</a>
 			<h1>The worst bot on <a href="https://twitter.com/FilsDeCulte" target="_blank">twitter</a> <img src="https://emojipedia-us.s3.amazonaws.com/thumbs/320/twitter/134/reversed-hand-with-middle-finger-extended_1f595.png" alt=""></h1>
@@ -51,5 +59,4 @@
 			</section>
 			
 		</div>
-</div>
 @endsection

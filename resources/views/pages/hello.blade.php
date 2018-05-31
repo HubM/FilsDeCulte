@@ -1,5 +1,4 @@
 @extends('layout.base')
-
 @section('body-class')welcome colored @endsection
 @section('content')
 	<section>

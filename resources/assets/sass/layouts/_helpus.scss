@@ -1,25 +1,10 @@
 .help-us {
 	margin-top: 100px;
 
-	h1 {
-		text-align: center;
-	}
-
 	form {
 		margin-top: 50px;
 	}
-
-	input, textare {
-	  font-size: 1.5em;
-	}
-
-	input {
-
-		&[type="text"] {
-			margin-bottom: 30px;
-		} 
-	}
-
+	
 	.alert {
 		position: relative;
 		img {

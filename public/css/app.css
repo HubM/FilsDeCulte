@@ -10022,6 +10022,10 @@ body {
   font-size: 1.5em;
 }
 
+body > div {
+  position: relative;
+}
+
 p {
   margin: 0;
 }
@@ -10058,6 +10062,103 @@ h1 {
   height: 100%;
 }
 
+.form-control {
+  font-size: 1em;
+  margin-bottom: 30px;
+}
+
+.login,
+.register,
+.reset-password {
+  margin-top: 100px;
+}
+
+.login form,
+.register form,
+.reset-password form {
+  margin-top: 50px;
+}
+
+@-webkit-keyframes doggyes {
+  0% {
+    -webkit-transform: rotate(0);
+            transform: rotate(0);
+  }
+
+  25% {
+    -webkit-transform: rotate(15deg);
+            transform: rotate(15deg);
+  }
+
+  75% {
+    -webkit-transform: rotate(-15deg);
+            transform: rotate(-15deg);
+  }
+
+  100% {
+    -webkit-transform: rotate(0);
+            transform: rotate(0);
+  }
+}
+
+@keyframes doggyes {
+  0% {
+    -webkit-transform: rotate(0);
+            transform: rotate(0);
+  }
+
+  25% {
+    -webkit-transform: rotate(15deg);
+            transform: rotate(15deg);
+  }
+
+  75% {
+    -webkit-transform: rotate(-15deg);
+            transform: rotate(-15deg);
+  }
+
+  100% {
+    -webkit-transform: rotate(0);
+            transform: rotate(0);
+  }
+}
+
+.access-users-spoils {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: end;
+      -ms-flex-pack: end;
+          justify-content: flex-end;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  position: absolute;
+  top: 50px;
+  right: 0;
+}
+
+.access-users-spoils img {
+  max-width: 40px;
+}
+
+.access-users-spoils a {
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #000;
+  font-weight: 600;
+}
+
+.access-users-spoils a:hover {
+  text-decoration: none;
+}
+
+.access-users-spoils a:hover img {
+  -webkit-animation: doggyes 0.5s infinite ease;
+          animation: doggyes 0.5s infinite ease;
+}
+
 /* =================
 Components
 ================= */
@@ -10068,8 +10169,8 @@ button,
   border-radius: 2px;
   font-size: 14px;
   letter-spacing: 1px;
-  -webkit-transition: all 0.5s ease;
-  transition: all 0.5s ease;
+  -webkit-transition: background-color 0.5s ease;
+  transition: background-color 0.5s ease;
   margin: 30px 0;
 }
 
@@ -10317,21 +10418,8 @@ Layouts
   margin-top: 100px;
 }
 
-.help-us h1 {
-  text-align: center;
-}
-
 .help-us form {
   margin-top: 50px;
-}
-
-.help-us input,
-.help-us textare {
-  font-size: 1.5em;
-}
-
-.help-us input[type="text"] {
-  margin-bottom: 30px;
 }
 
 .help-us .alert {

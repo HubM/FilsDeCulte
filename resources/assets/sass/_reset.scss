@@ -5,6 +5,10 @@ html {
 body {
 	font-family: $font1;
 	font-size: 1.5em;
+
+	& > div {
+		position: relative;
+	}
 }
 
 p {
@@ -23,12 +27,13 @@ h1 {
   line-height: 65px;
 	color: $color3;
 	margin-bottom: 30px;
-
+	
 	@media (min-width: 	992px) {
 	  font-size: 100px;
     line-height: 95px;
 	}
 }
+
 .logo {
     width: 100px;
 	margin: 50px 0;
@@ -42,3 +47,69 @@ h1 {
   min-height: 100vh;
   height: 100%;
  }
+
+ .form-control {
+  font-size: 1em;
+  margin-bottom: 30px;
+ }
+
+
+.login,
+.register,
+.reset-password {
+	margin-top: 100px;
+
+	form {
+		margin-top: 50px;
+	}
+}
+
+
+
+@keyframes doggyes {
+	0% {
+		transform: rotate(0);
+	}
+	25%  {
+		transform: rotate(15deg);
+	}
+	75% {
+		transform: rotate(-15deg);
+	}
+	100% {
+		transform: rotate(0);
+	}
+}
+
+
+
+.access-users-spoils {
+	display: flex;
+	justify-content: flex-end;
+	align-items: center;
+	position: absolute;
+	top: 50px;
+	right: 0;
+
+	img {
+		max-width: 40px;
+	}
+
+	a {
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #000;
+    font-weight:600;
+		
+		&:hover {
+			text-decoration: none;
+
+			img {
+				animation: doggyes 0.5s infinite ease;
+			}
+		}
+	}
+
+
+}

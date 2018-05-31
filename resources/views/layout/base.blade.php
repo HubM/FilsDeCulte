@@ -6,8 +6,10 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>FilsdeCulte</title>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Raleway:100,600" rel="stylesheet" type="text/css">
-    <link rel="stylesheet" type="text/css" href="css/app.css">
+    {{-- <link rel="stylesheet" type="text/css" href="css/app.css"> --}}
     <link rel="apple-touch-icon" sizes="57x57" href="favicon/apple-icon-57x57.png">
     <link rel="apple-touch-icon" sizes="60x60" href="favicon/apple-icon-60x60.png">
     <link rel="apple-touch-icon" sizes="72x72" href="favicon/apple-icon-72x72.png">
@@ -27,7 +29,7 @@
     <meta name="theme-color" content="#ffffff">    
   </head>
 <body>
-  <div class="@yield('body-class')">
+  <div class="container @yield('body-class')">
     @yield('content')
   </div>
 </body>

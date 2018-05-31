@@ -1,7 +1,7 @@
 @extends('layout.base')
 @section('body-class')users-spoil @endsection
 @section('content')
-<section class="container">
+<section>
 	<h1>Users spoils</h1>
 	
 	{{ Form::open(array('url' => '#')) }}

@@ -2,8 +2,9 @@
 @section('body-class')stats @endsection
 @section('content')
 	<section class="container">
+		@include('layout.logged-access')
 		<header>
-			<a href="./">
+			<a href="./about">
 				<img src="./images/logo_fdc.svg" alt="Logo fils de culte" class="logo">
 			</a>	
 			<h1>Stats</h1>
