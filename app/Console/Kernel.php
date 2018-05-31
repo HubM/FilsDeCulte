@@ -24,7 +24,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('tweets:get')->everyFifteenMinutes();
+        $schedule->command('tweets:get')->everyFiveMinutes();
         $schedule->command('scrap:get')->daily();
     }
 

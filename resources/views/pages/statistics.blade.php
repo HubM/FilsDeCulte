@@ -8,7 +8,6 @@
 				<img src="./images/logo_fdc.svg" alt="Logo fils de culte" class="logo">
 			</a>	
 			<h1>Stats</h1>
-			<p>In this page, we will present you different statistics we got =)</p>
 		</header>
 		<main>
 			@if ($datas)
