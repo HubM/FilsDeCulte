@@ -58,23 +58,19 @@ class connectAlgoliaAndGetSpoilJob implements ShouldQueue
       we make a random on this array and pick one result
     */
     if($query->nbHits > 0) {
-      $spoil = $query->hits[0]["spoil"];
-      $movie_real_name = $query->hits[0]["movie"];
-
-      
-      if(is_array($spoil)) {
-        $rand = array_rand($spoil, 1);
-        $response = $spoil[$rand];
+      if($query->nbHits === 1) {
+        $movie_real_name = $query->hits[0]["movie"];
+        $response = $query->hits[0]["spoil"];
       } else {
-        $response = $spoil;
+        $random_number = array_rand($query->hits, 1);
+        $movie_real_name = $query->hits[$random_number]["movie"];
+        $response = $query->hits[$random_number]["spoil"];
       }
 
       /*
         we get the final spoil, and update in our database the tweet associated
       */
       $tweet->update(['spoil' => $response, 'movie_title_real_name' => $movie_real_name]);
-
-
     } else {
       /*
         if we haven't a spoil for this movie, we get the tweet and get all
