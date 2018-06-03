@@ -85,7 +85,7 @@ class connectAlgoliaAndGetSpoilJob implements ShouldQueue
       $tweetCreator_movie = $Badtweet->movie_title;
 
       $parametersDirectMessageFail = [
-        'status' => "Sorry @$tweetCreator, we doesn't know your movie #$tweetCreator_movie :/. You maybe can help us ? ". URL_HELP,
+        'status' => "Désolé @$tweetCreator, nous ne connaissons pas votre film #$tweetCreator_movie :/. Peut-être que vous oui ? Proposez votre spoil en cliquant sur le lien suivant : ". URL_HELP,
         'in_reply_to_status_id' => $tweetCreator_tweet_id
       ];
       Twitter::postTweet($parametersDirectMessageFail);
